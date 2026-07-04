@@ -1,0 +1,118 @@
+@startuml
+
+'==== DOMINIO ====
+
+class Clima {
+    +temperatura : double
+    +humedad : int
+    +descripcion : String
+    +fechaHora : LocalDateTime
+}
+
+class ClimaRepository {
+    +guardar(clima)
+    +obtenerUltimo() : Clima
+}
+
+'==== WEATHER API ====
+'Cliente capaz de consultar un proveedor meteorológico
+
+'Facil cambiar de proovedor
+interface WeatherApiClient {
+    +obtenerClimaActual() : WeatherResponse
+}
+
+class WeatherApiClientImpl
+
+WeatherApiClientImpl ..|> WeatherApiClient
+
+'Dto del JSON recibido
+class WeatherResponse {
+    +temperatura : double
+    +humedad  : int
+    +descripcion  : String
+}
+
+'==== PATRÓN FACADE ====
+'Adapta el clima obtenido al modelo interno
+
+class ClimaFacade {
+    +actualizarClima()
+    +analizarUltimoClima()
+}
+
+'==== PATRÓN ADAPTER ====
+'Adapta un WeatherResponse en un Clima, e interfaz únicamente conocida por la fachada
+
+interface ClimaAdapter {
+    +adaptar(response: WeatherResponse) : Clima
+}
+
+class WeatherApiAdapter
+
+WeatherApiAdapter ..|> ClimaAdapter
+
+'==== PATRÓN STRATEGY ====
+
+interface EstrategiaAlerta {
+    +esCondicionCritica(clima: Clima): boolean
+}
+
+class EstrategiaTemperaturaHumedad
+
+EstrategiaTemperaturaHumedad ..|> EstrategiaAlerta
+
+'Obtiene un Clima, lo analiza, crea una alerta y avisa al GestorAlertas
+class AnalizadorClima {
+    -estrategia : EstrategiaAlerta
+    +analizar(clima)
+}
+
+'==== PATRÓN OBSERVER ====
+
+'Representa cualquier componente interesado en enterarse de una alerta
+interface ObservadorAlerta {
+    +actualizar(alerta)
+}
+
+'Observador concreto
+class EmailNotifier
+
+EmailNotifier ..|> ObservadorAlerta
+
+'Contiene una lista de observadores para informar
+class GestorAlertas {
+    +suscribir(observador)
+    +desuscribir(observador)
+    +notificar(alerta)
+}
+
+'Una alerta generada que contiene los datos necesarios para notificar
+class Alerta {
+    +temperatura
+    +humedad
+    +descripcion
+    +fechaHora
+}
+
+'==== RELACIONES ====
+
+ClimaFacade --> WeatherApiClient
+ClimaFacade --> ClimaAdapter
+ClimaFacade --> ClimaRepository
+ClimaFacade --> AnalizadorClima
+
+WeatherApiClient --> WeatherResponse
+WeatherApiAdapter --> WeatherResponse
+WeatherApiAdapter --> Clima
+
+ClimaRepository --> Clima
+
+AnalizadorClima --> EstrategiaAlerta
+AnalizadorClima --> GestorAlertas
+AnalizadorClima --> Alerta
+
+GestorAlertas o--> ObservadorAlerta
+GestorAlertas --> Alerta
+
+@enduml
