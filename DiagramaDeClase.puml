@@ -33,6 +33,13 @@ class WeatherResponse {
     +descripcion  : String
 }
 
+'==== SERVICES ====
+'Obtiene un Clima, lo analiza, crea una alerta y avisa al GestorAlertas
+class AnalizadorClimatico {
+    -estrategia : EstrategiaAlerta
+    +analizar(clima)
+}
+
 '==== PATRÓN FACADE ====
 'Adapta el clima obtenido al modelo interno
 
@@ -61,12 +68,6 @@ interface EstrategiaAlerta {
 class EstrategiaTemperaturaHumedad
 
 EstrategiaTemperaturaHumedad ..|> EstrategiaAlerta
-
-'Obtiene un Clima, lo analiza, crea una alerta y avisa al GestorAlertas
-class AnalizadorClima {
-    -estrategia : EstrategiaAlerta
-    +analizar(clima)
-}
 
 '==== PATRÓN OBSERVER ====
 
