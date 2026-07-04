@@ -9,9 +9,10 @@ class Clima {
     +fechaHora : LocalDateTime
 }
 
-class ClimaRepository {
-    +guardar(clima)
-    +obtenerUltimo() : Clima
+'Una alerta generada que contiene los datos necesarios para notificar
+class Alerta {
+    -clima : Clima
+    -fecha : LocalDateTime
 }
 
 '==== WEATHER API ====
@@ -37,19 +38,33 @@ class WeatherResponse {
 'Obtiene un Clima, lo analiza, crea una alerta y avisa al GestorAlertas
 class AnalizadorClimatico {
     -estrategia : EstrategiaAlerta
+    -gestorAlertas : GestorAlertas
+
     +analizar(clima)
+}
+
+class RegistroClimatico {
+    -historial : List<Clima>
+
+    +guardar(clima)
+    +obtenerUltimo() : Clima
 }
 
 '==== PATRÓN FACADE ====
 'Adapta el clima obtenido al modelo interno
 
 class ClimaFacade {
+    -weatherApiClient : WeatherApiClient
+    -climaAdapter : ClimaAdapter
+    -registroClimatico : RegistroClimatico
+    -analizadorClimatico : AnalizadorClimatico
+
     +actualizarClima()
     +analizarUltimoClima()
 }
 
 '==== PATRÓN ADAPTER ====
-'Adapta un WeatherResponse en un Clima, e interfaz únicamente conocida por la fachada
+'Convierte un WeatherResponse en un Clima del dominio
 
 interface ClimaAdapter {
     +adaptar(response: WeatherResponse) : Clima
@@ -88,30 +103,23 @@ class GestorAlertas {
     +notificar(alerta)
 }
 
-'Una alerta generada que contiene los datos necesarios para notificar
-class Alerta {
-    +temperatura
-    +humedad
-    +descripcion
-    +fechaHora
-}
-
 '==== RELACIONES ====
 
 ClimaFacade --> WeatherApiClient
 ClimaFacade --> ClimaAdapter
-ClimaFacade --> ClimaRepository
-ClimaFacade --> AnalizadorClima
+ClimaFacade --> RegistroClimatico
+ClimaFacade --> AnalizadorClimatico
 
 WeatherApiClient --> WeatherResponse
 WeatherApiAdapter --> WeatherResponse
 WeatherApiAdapter --> Clima
 
-ClimaRepository --> Clima
+RegistroClimatico --> Clima
 
-AnalizadorClima --> EstrategiaAlerta
-AnalizadorClima --> GestorAlertas
-AnalizadorClima --> Alerta
+AnalizadorClimatico --> EstrategiaAlerta
+AnalizadorClimatico --> GestorAlertas
+'Crea
+AnalizadorClimatico ..> Alerta
 
 GestorAlertas o--> ObservadorAlerta
 GestorAlertas --> Alerta

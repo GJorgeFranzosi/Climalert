@@ -1,7 +1,9 @@
 package ar.edu.utn.ba.ddsi.sistema_climatico.observer;
 
 import ar.edu.utn.ba.ddsi.sistema_climatico.domain.Alerta;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EmailNotifier implements ObservadorAlerta {
 
   @Override

@@ -1,10 +1,12 @@
 package ar.edu.utn.ba.ddsi.sistema_climatico.observer;
 
 import ar.edu.utn.ba.ddsi.sistema_climatico.domain.Alerta;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class GestorAlertas {
   private final List<ObservadorAlerta> observadores = new ArrayList<>();
 
