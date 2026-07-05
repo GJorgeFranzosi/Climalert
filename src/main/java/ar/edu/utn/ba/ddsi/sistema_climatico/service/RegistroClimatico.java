@@ -10,9 +10,10 @@ public class RegistroClimatico {
   //Guardar los registros en memoria
     private final List<Clima> historial = new ArrayList<>();
 
-    public void guardar(Clima clima) {
-      historial.add(clima);
-    }
+  public void guardar(Clima clima) {
+    //System.out.println("Guardando clima: " + clima);
+    historial.add(clima);
+  }
     public Clima obtenerUltimo() {
       if (historial.isEmpty()) {
         return null;

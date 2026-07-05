@@ -19,13 +19,18 @@ public class WeatherApiClientImpl implements WeatherApiClient {
   public WeatherResponse obtenerClimaActual() {
 
     String uri = UriComponentsBuilder
-        .fromUriString(properties.getUrl()) //.fromHttpUrl(properties.getUrl()) en la 3.x.x
+        .fromUriString(properties.getUrl())
         .queryParam("key", properties.getKey())
         .queryParam("q", properties.getCity())
         .toUriString();
 
     try {
-      return restTemplate.getForObject(uri, WeatherResponse.class);
+      WeatherResponse response = restTemplate.getForObject(uri, WeatherResponse.class);
+      /*
+      System.out.println("URI: " + uri);
+      System.out.println("Response: " + response);
+      */
+      return response;
     } catch (RestClientException e) {
       throw new RuntimeException("Error al consumir WeatherAPI.", e);
     }

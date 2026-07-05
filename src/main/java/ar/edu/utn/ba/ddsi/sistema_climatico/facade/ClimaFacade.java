@@ -7,6 +7,7 @@ import ar.edu.utn.ba.ddsi.sistema_climatico.service.AnalizadorClimatico;
 import ar.edu.utn.ba.ddsi.sistema_climatico.client.WeatherApiClient;
 import ar.edu.utn.ba.ddsi.sistema_climatico.service.RegistroClimatico;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,12 +21,13 @@ public class ClimaFacade {
   public void actualizarClima() {
     WeatherResponse response = weatherApiClient.obtenerClimaActual();
     Clima clima = climaAdapter.adaptar(response);
-    if (clima != null) {
-      analizadorClimatico.analizar(clima);
+    if (clima == null) { // si no hay datos, no analizar nada
+      return;
     }
     registroClimatico.guardar(clima);
   }
 
+  @Scheduled(initialDelay = 15000, fixedRate = 15000)
   public void analizarUltimoClima() {
     Clima clima = registroClimatico.obtenerUltimo();
     analizadorClimatico.analizar(clima);

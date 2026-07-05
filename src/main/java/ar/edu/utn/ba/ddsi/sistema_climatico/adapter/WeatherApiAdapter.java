@@ -10,11 +10,17 @@ public class WeatherApiAdapter implements ClimaAdapter {
 
   @Override
   public Clima adaptar(WeatherResponse response) {
-    return new Clima(
+
+    //System.out.println("Response recibido: " + response);
+    //System.out.println("Current: " + response.getCurrent());
+    Clima clima = new Clima(
         response.getCurrent().getTemperatura(),
         response.getCurrent().getHumedad(),
         response.getCurrent().getCondition().getText(),
         LocalDateTime.now()
     );
+    //System.out.println("Clima creado: " + clima);
+    return clima;
   }
+
 }
