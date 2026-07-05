@@ -6,13 +6,8 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Current {
+public class RespuestaClima {
 
-  @JsonProperty("temp_c")
-  private double temperatura;
-
-  @JsonProperty("humidity")
-  private int humedad;
-
-  private Condition condition;
+  @JsonProperty("current")
+  private ClimaActual climaActual;
 }

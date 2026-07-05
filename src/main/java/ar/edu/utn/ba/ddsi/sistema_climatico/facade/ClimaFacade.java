@@ -2,7 +2,7 @@ package ar.edu.utn.ba.ddsi.sistema_climatico.facade;
 
 import ar.edu.utn.ba.ddsi.sistema_climatico.adapter.ClimaAdapter;
 import ar.edu.utn.ba.ddsi.sistema_climatico.domain.Clima;
-import ar.edu.utn.ba.ddsi.sistema_climatico.dto.WeatherResponse;
+import ar.edu.utn.ba.ddsi.sistema_climatico.dto.RespuestaClima;
 import ar.edu.utn.ba.ddsi.sistema_climatico.service.AnalizadorClimatico;
 import ar.edu.utn.ba.ddsi.sistema_climatico.client.WeatherApiClient;
 import ar.edu.utn.ba.ddsi.sistema_climatico.service.RegistroClimatico;
@@ -19,7 +19,7 @@ public class ClimaFacade {
   private final AnalizadorClimatico analizadorClimatico;
 
   public void actualizarClima() {
-    WeatherResponse response = weatherApiClient.obtenerClimaActual();
+    RespuestaClima response = weatherApiClient.obtenerClimaActual();
     Clima clima = climaAdapter.adaptar(response);
     if (clima == null) { // si no hay datos, no analizar nada
       return;

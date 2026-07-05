@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class WeatherResponse {
-  private Current current;
+public class CondicionClimatica {
+  private String text;
 }

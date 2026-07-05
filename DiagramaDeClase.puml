@@ -20,18 +20,26 @@ class Alerta {
 
 'Facil cambiar de proovedor
 interface WeatherApiClient {
-    +obtenerClimaActual() : WeatherResponse
+    +obtenerClimaActual() : RespuestaClima
 }
 
 class WeatherApiClientImpl
 
 WeatherApiClientImpl ..|> WeatherApiClient
 
-'Dto del JSON recibido
-class WeatherResponse {
+'Dtos del JSON recibido
+class RespuestaClima {
+    +climaActual : ClimaActual
+}
+
+class ClimaActual {
     +temperatura : double
-    +humedad  : int
-    +descripcion  : String
+    +humedad : int
+    +condicionClimatica : CondicionClimatica
+}
+
+class CondicionClimatica {
+    +text : String
 }
 
 '==== SERVICES ====
@@ -64,10 +72,10 @@ class ClimaFacade {
 }
 
 '==== PATRÓN ADAPTER ====
-'Convierte un WeatherResponse en un Clima del dominio
+'Convierte un RespuestaClima en un Clima del dominio
 
 interface ClimaAdapter {
-    +adaptar(response: WeatherResponse) : Clima
+    +adaptar(response: RespuestaClima) : Clima
 }
 
 class WeatherApiAdapter
@@ -94,8 +102,6 @@ interface ObservadorAlerta {
 'Observador concreto
 class EmailNotifier
 
-EmailNotifier ..|> ObservadorAlerta
-
 'Contiene una lista de observadores para informar
 class GestorAlertas {
     +suscribir(observador)
@@ -121,8 +127,8 @@ ClimaFacade --> ClimaAdapter
 ClimaFacade --> RegistroClimatico
 ClimaFacade --> AnalizadorClimatico
 
-WeatherApiClient --> WeatherResponse
-WeatherApiAdapter --> WeatherResponse
+WeatherApiClient --> RespuestaClima
+WeatherApiAdapter --> RespuestaClima
 WeatherApiAdapter --> Clima
 
 
@@ -135,5 +141,10 @@ AnalizadorClimatico ..> Alerta
 
 GestorAlertas o--> ObservadorAlerta
 GestorAlertas --> Alerta
+
+RespuestaClima --> ClimaActual
+ClimaActual --> CondicionClimatica
+
+EmailNotifier ..|> ObservadorAlerta
 
 @enduml

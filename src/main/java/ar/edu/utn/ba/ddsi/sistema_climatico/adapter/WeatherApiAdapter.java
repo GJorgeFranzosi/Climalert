@@ -1,7 +1,7 @@
 package ar.edu.utn.ba.ddsi.sistema_climatico.adapter;
 
 import ar.edu.utn.ba.ddsi.sistema_climatico.domain.Clima;
-import ar.edu.utn.ba.ddsi.sistema_climatico.dto.WeatherResponse;
+import ar.edu.utn.ba.ddsi.sistema_climatico.dto.RespuestaClima;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
@@ -9,18 +9,14 @@ import java.time.LocalDateTime;
 public class WeatherApiAdapter implements ClimaAdapter {
 
   @Override
-  public Clima adaptar(WeatherResponse response) {
+  public Clima adaptar(RespuestaClima response) {
 
-    //System.out.println("Response recibido: " + response);
-    //System.out.println("Current: " + response.getCurrent());
     Clima clima = new Clima(
-        response.getCurrent().getTemperatura(),
-        response.getCurrent().getHumedad(),
-        response.getCurrent().getCondition().getText(),
+        response.getClimaActual().getTemperatura(),
+        response.getClimaActual().getHumedad(),
+        response.getClimaActual().getCondicionClimatica().getText(),
         LocalDateTime.now()
     );
-    //System.out.println("Clima creado: " + clima);
     return clima;
   }
-
 }

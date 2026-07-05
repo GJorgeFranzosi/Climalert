@@ -1,7 +1,7 @@
 package ar.edu.utn.ba.ddsi.sistema_climatico.client;
 
 import ar.edu.utn.ba.ddsi.sistema_climatico.config.WeatherApiProperties;
-import ar.edu.utn.ba.ddsi.sistema_climatico.dto.WeatherResponse;
+import ar.edu.utn.ba.ddsi.sistema_climatico.dto.RespuestaClima;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -16,7 +16,7 @@ public class WeatherApiClientImpl implements WeatherApiClient {
   private final RestTemplate restTemplate;
 
   @Override
-  public WeatherResponse obtenerClimaActual() {
+  public RespuestaClima obtenerClimaActual() {
 
     String uri = UriComponentsBuilder
         .fromUriString(properties.getUrl())
@@ -25,11 +25,7 @@ public class WeatherApiClientImpl implements WeatherApiClient {
         .toUriString();
 
     try {
-      WeatherResponse response = restTemplate.getForObject(uri, WeatherResponse.class);
-      /*
-      System.out.println("URI: " + uri);
-      System.out.println("Response: " + response);
-      */
+      RespuestaClima response = restTemplate.getForObject(uri, RespuestaClima.class);
       return response;
     } catch (RestClientException e) {
       throw new RuntimeException("Error al consumir WeatherAPI.", e);
