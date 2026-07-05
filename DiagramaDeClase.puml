@@ -96,11 +96,13 @@ EstrategiaTemperaturaHumedad ..|> EstrategiaAlerta
 
 'Representa cualquier componente interesado en enterarse de una alerta
 interface ObservadorAlerta {
-    +actualizar(alerta)
+    +actualizar(alerta: ALerta)
 }
 
 'Observador concreto
-class EmailNotifier
+class EmailNotifier {
+    +actualizar(alerta: Alerta)
+}
 
 'Contiene una lista de observadores para informar
 class GestorAlertas {
@@ -108,17 +110,6 @@ class GestorAlertas {
     +desuscribir(observador)
     +notificar(alerta)
 }
-
-'==== CONFIG ====
-'Quizá no haga falta diagramarlo
-
-class WeatherApiProperties {
-    apiKey
-    url
-    city
-}
-
-WeatherApiClientImpl --> WeatherApiProperties
 
 '==== RELACIONES ====
 
@@ -136,7 +127,7 @@ RegistroClimatico --> Clima
 
 AnalizadorClimatico --> EstrategiaAlerta
 AnalizadorClimatico --> GestorAlertas
-'Crea
+
 AnalizadorClimatico ..> Alerta
 
 GestorAlertas o--> ObservadorAlerta
