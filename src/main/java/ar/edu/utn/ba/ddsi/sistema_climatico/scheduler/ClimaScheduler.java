@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ClimaScheduler {
+
   private final ClimaFacade climaFacade;
 
-  //@Scheduled(fixedRate = 300000) // a los cinco minutos
-  Scheduled(fixedRate = 10000)
+  @Scheduled(fixedRate = 10000) //10s
   public void actualizarClima() {
     climaFacade.actualizarClima();
   }
-  //@Scheduled(fixedRate = 60000) // al minuto
-  Scheduled(fixedRate = 15000)
+
+  @Scheduled(fixedRate = 15000) //15s
   public void analizarUltimoClima() {
     climaFacade.analizarUltimoClima();
   }

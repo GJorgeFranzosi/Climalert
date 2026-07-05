@@ -14,6 +14,9 @@ public class RegistroClimatico {
       historial.add(clima);
     }
     public Clima obtenerUltimo() {
+      if (historial.isEmpty()) {
+        return null;
+      }
       return historial.get(historial.size() - 1);
     }
     public List<Clima> obtenerHistorial() {

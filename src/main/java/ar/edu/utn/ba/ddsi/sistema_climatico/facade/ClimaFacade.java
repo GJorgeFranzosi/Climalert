@@ -20,6 +20,9 @@ public class ClimaFacade {
   public void actualizarClima() {
     WeatherResponse response = weatherApiClient.obtenerClimaActual();
     Clima clima = climaAdapter.adaptar(response);
+    if (clima != null) {
+      analizadorClimatico.analizar(clima);
+    }
     registroClimatico.guardar(clima);
   }
 

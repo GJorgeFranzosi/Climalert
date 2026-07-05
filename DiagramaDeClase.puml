@@ -16,7 +16,7 @@ class Alerta {
 }
 
 '==== WEATHER API ====
-'Cliente capaz de consultar un proveedor meteorológico
+'Implementación rest del proveedor WeatherAPI
 
 'Facil cambiar de proovedor
 interface WeatherApiClient {
@@ -103,6 +103,17 @@ class GestorAlertas {
     +notificar(alerta)
 }
 
+'==== CONFIG ====
+'Quizá no haga falta diagramarlo
+
+class WeatherApiProperties {
+    apiKey
+    url
+    city
+}
+
+WeatherApiClientImpl --> WeatherApiProperties
+
 '==== RELACIONES ====
 
 ClimaFacade --> WeatherApiClient
@@ -113,6 +124,7 @@ ClimaFacade --> AnalizadorClimatico
 WeatherApiClient --> WeatherResponse
 WeatherApiAdapter --> WeatherResponse
 WeatherApiAdapter --> Clima
+
 
 RegistroClimatico --> Clima
 

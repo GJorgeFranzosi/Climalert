@@ -1,0 +1,18 @@
+package ar.edu.utn.ba.ddsi.sistema_climatico.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Current {
+
+  @JsonProperty("temp_c")
+  private double temperatura;
+
+  @JsonProperty("humidity")
+  private int humedad;
+
+  private Condition condition;
+}

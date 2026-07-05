@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 public class WeatherApiAdapter implements ClimaAdapter {
 
   @Override
-  public Clima adaptar(WeatherResponse weatherResponse) {
+  public Clima adaptar(WeatherResponse response) {
     return new Clima(
-        weatherResponse.getTemperatura(),
-        weatherResponse.getHumedad(),
-        weatherResponse.getDescripcion(),
-        LocalDateTime.now() //Registramos fecha
+        response.getCurrent().getTemperatura(),
+        response.getCurrent().getHumedad(),
+        response.getCurrent().getCondition().getText(),
+        LocalDateTime.now()
     );
   }
 }
